@@ -20,28 +20,22 @@
 ## Preview
 
 <p align="center">
-  <img src="assets/home.gif" width="260" alt="Carryon Home">
+  <img src="images/home.gif" width="260" alt="Carryon Home">
   &nbsp;&nbsp;&nbsp;
-  <img src="images/home.gif" width="260" alt="Carryon Storage Summary">
+  <img src="images/storage.gif" width="260" alt="Carryon Storage Summary">
 </p>
 
-<p align="center">
-  <img src="assets/storage.gif" width="260" alt="Carryon Home">
-  &nbsp;&nbsp;&nbsp;
-  <img src="images/summary.gif" width="260" alt="Carryon Storage Summary">
-</p>
 ---
 
 ## Screenshots
 
 <p align="center">
-  <img src="images/home.png" width="200">
-  <img src="images/detail.png" width="200">
-  <img src="iamges/storage.png" width="200">
-  <img src="images/search.png" width="200">
-  <img src="images/settings.png" width="200">
+  <img src="images/home.png" width="180" alt="Home">
+  <img src="images/detail.png" width="180" alt="Details">
+  <img src="images/search.png" width="180" alt="Search">
+  <img src="images/storage.png" width="180" alt="Storage">
+  <img src="images/settings.jpeg" width="180" alt="Settings">
 </p>
-
 ---
 
 ## Features
