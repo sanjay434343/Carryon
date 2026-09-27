@@ -36,8 +36,8 @@
 
 <p align="center">
   <img src="images/home.png" width="200">
-  <img src="iamges/files.png" width="200">
-  <img src="images/player.png" width="200">
+  <img src="iamges/storage.png" width="200">
+  <img src="images/search.png" width="200">
   <img src="images/settings.png" width="200">
 </p>
 
