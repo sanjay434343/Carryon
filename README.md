@@ -1,88 +1,155 @@
-# 📱 Carryon — Unlimited Cloud Storage in Your Pocket
+# Carryon
 
-> **Turn your Telegram account into an encrypted, infinite cloud drive with a modern, expressive Play Store interface.**
+<p align="center">
+  <img src="assets/logo.png" width="110" alt="Carryon Logo">
+</p>
 
-![Flutter](https://img.shields.io/badge/Flutter-3.x-blue?logo=flutter)
-![Android](https://img.shields.io/badge/Platform-Android-green?logo=android)
-![Storage](https://img.shields.io/badge/Storage-Unlimited-orange)
-![Security](https://img.shields.io/badge/Security-Encrypted-red)
+<p align="center">
+  <b>Your files. Your Telegram. Your cloud.</b><br>
+  A Flutter app that turns Telegram into your personal cloud storage.
+</p>
 
----
-
-## 🌟 Overview
-
-**Carryon** is a premium, state-of-the-art mobile application that converts your Telegram Saved Messages into a private, unlimited cloud storage drive. Upload, organize, preview, and stream your photos, videos, documents, music, and apps directly from your phone with maximum speed and zero storage caps.
-
----
-
-## ✨ Play Store Feature Highlights
-
-* ☁️ **Unlimited Storage Capacity** — Store infinite files, videos, high-res photos, and archives powered by Telegram's cloud infrastructure.
-* 🔐 **Google Identity & Firestore Sync** — Authenticate securely with Google Sign-In. Your unique account UID and access timestamps are automatically backed up to Firebase Firestore.
-* 🛡️ **Double-Layer Authentication** — Supports Telegram MTProto mobile OTP and Two-Step Verification (2FA Cloud Password) for high-grade account protection.
-* 📁 **Smart Media Categorization** — Automatically categorizes your files into **Images**, **Videos**, **Documents**, **Audio**, **Apps**, and **Archives** with stacked folder card carousels.
-* ⚡ **Background Queue & Resume** — Sequential chunk uploading and downloading with live progress indicators and offline resilience.
-* 🎨 **Dynamic Material You Theme** — Modern glassmorphism UI that seamlessly matches your device light/dark mode and system wallpaper colors.
-* 🔄 **Automatic In-App Updates** — Built-in GitHub release checker that notifies you when a new app version is available and lets you upgrade with a single tap.
-* 🐛 **Instant Bug Reporter** — Integrated bug reporter in Settings connecting you directly to GitHub Issues to suggest features or report bugs.
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white">
+  <img src="https://img.shields.io/badge/Android-API%2023%2B-3DDC84?logo=android&logoColor=white">
+  <img src="https://img.shields.io/badge/Storage-Telegram-2CA5E0?logo=telegram&logoColor=white">
+</p>
 
 ---
 
-## 🚀 How It Works (3 Easy Steps)
+## Screenshots
 
-1. **Google Identity Login**: Sign in with your Google account to establish your secure user identity UID.
-2. **Connect Telegram Cloud**: Enter your mobile number, input the verification OTP code, and complete 2FA if enabled.
-3. **Upload & Enjoy**: Tap the **Upload** button to select photos, videos, or files from your gallery and enjoy unlimited cloud storage!
+<p align="center">
+  <img src="screenshots/home.png" width="220">
+  <img src="screenshots/files.png" width="220">
+  <img src="screenshots/player.png" width="220">
+  <img src="screenshots/settings.png" width="220">
+</p>
 
 ---
 
-## 📦 Versioning & Release Guide (For Developers)
+## Features
 
-Whenever you build a new update for Carryon, follow these simple version increment steps:
+* ☁️ Telegram-powered cloud storage
+* 🔐 MTProto + Telegram 2FA
+* 📁 Automatic file categorization
+* 🎬 Photo, video, audio and document previews
+* ⚡ Background upload/download
+* 🔄 Resume interrupted transfers
+* 🌙 Dynamic light/dark theme
+* 🔔 In-app update checker
+* 🐛 Built-in bug reporting
 
-### 1. Bump Version Code in `pubspec.yaml`
-Open `pubspec.yaml` and update the version line:
-```yaml
-# Format: version: MAJOR.MINOR.PATCH+BUILD_NUMBER
-version: 1.0.1+2
+---
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[📱 Carryon] --> B[🔐 Telegram Authentication]
+    B --> C[☁️ Telegram Cloud]
+    C --> D[📁 Files]
+    C --> E[🎬 Media]
+    C --> F[📄 Documents]
 ```
-* **`1.0.1`** (Version Name): Shown to users in the App Settings & Update Checker.
-* **`2`** (Build Code): Incremented integer for Android APK compilation.
 
-### 2. Build Release APK
+---
+
+## Upload Flow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant C as Carryon
+    participant T as Telegram
+
+    U->>C: Select file
+    C->>C: Prepare upload
+    C->>T: Upload
+    T-->>C: File stored
+    C-->>U: Upload complete
+```
+
+---
+
+## Architecture
+
+```mermaid
+graph TD
+    UI[Flutter UI]
+
+    AUTH[Authentication]
+    STORAGE[Storage Manager]
+    MEDIA[Media Manager]
+    DB[Local Database]
+
+    TELEGRAM[Telegram MTProto]
+    FIREBASE[Firebase]
+
+    UI --> AUTH
+    UI --> STORAGE
+    UI --> MEDIA
+    UI --> DB
+
+    AUTH --> TELEGRAM
+    AUTH --> FIREBASE
+    STORAGE --> TELEGRAM
+    MEDIA --> TELEGRAM
+```
+
+---
+
+## Tech Stack
+
+| Layer          | Technology     |
+| -------------- | -------------- |
+| UI             | Flutter        |
+| Language       | Dart           |
+| Cloud Storage  | Telegram       |
+| Protocol       | MTProto        |
+| Authentication | Google Sign-In |
+| Backend Sync   | Firebase       |
+| Platform       | Android        |
+
+---
+
+## Run
+
+```bash
+flutter pub get
+flutter run
+```
+
+Build:
+
 ```bash
 flutter build apk --release
 ```
 
-### 3. Publish to GitHub Releases
-1. Go to your GitHub repository: `https://github.com/CarryonApp/carryon/releases`
-2. Click **Draft a new release**.
-3. Set the Tag version to **`v1.0.1`** (matching your `pubspec.yaml` version).
-4. Upload `build/app/outputs/flutter-apk/app-release.apk` as an asset.
-5. Publish the release! 
+---
 
-> 💡 **Result**: All installed Carryon apps will automatically detect `v1.0.1` via the in-app **Update Checker** and prompt the user to download the update inside the app!
+## Release
+
+Update `pubspec.yaml`:
+
+```yaml
+version: 1.0.1+2
+```
+
+Then:
+
+```bash
+flutter build apk --release
+```
+
+APK:
+
+```text
+build/app/outputs/flutter-apk/app-release.apk
+```
 
 ---
 
-## 🔒 Privacy & Security Overview
-
-* **Direct MTProto Connection**: Connects directly to official Telegram Data Centers via MTProto.
-* **Encrypted Storage**: Your files reside securely in your personal Telegram Saved Messages ("me").
-* **No Third-Party Brokers**: Carryon does not host or store your media files on external intermediate servers.
-
----
-
-## 📋 App Specifications
-
-| Item | Details |
-| :--- | :--- |
-| **App Name** | Carryon |
-| **Category** | Productivity / Tools / Cloud Storage |
-| **Min Android SDK** | Android 6.0 (API 23+) |
-| **Target Android SDK** | Android 14 / 15 (API 34/35/36) |
-| **Architecture** | Flutter / Dart / Firebase Auth / MTProto |
-
----
-
-<p center="align">Crafted with ❤️ for Unlimited Storage Lovers</p>
+<p align="center">
+  Built with ❤️ using Flutter
+</p>
