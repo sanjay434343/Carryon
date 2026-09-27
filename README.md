@@ -1,7 +1,7 @@
 # Carryon
 
 <p align="center">
-  <img src="images/logo.png" width="110" alt="Carryon Logo">
+  <img src="assets/logo.png" width="110" alt="Carryon Logo">
 </p>
 
 <p align="center">
@@ -17,13 +17,23 @@
 
 ---
 
+## Preview
+
+<p align="center">
+  <img src="assets/home.gif" width="260" alt="Carryon Home">
+  &nbsp;&nbsp;&nbsp;
+  <img src="assets/storage-summary.gif" width="260" alt="Carryon Storage Summary">
+</p>
+
+---
+
 ## Screenshots
 
 <p align="center">
-  <img src="screenshots/home.png" width="220">
-  <img src="screenshots/files.png" width="220">
-  <img src="screenshots/player.png" width="220">
-  <img src="screenshots/settings.png" width="220">
+  <img src="assets/home.png" width="200">
+  <img src="assets/files.png" width="200">
+  <img src="assets/player.png" width="200">
+  <img src="assets/settings.png" width="200">
 </p>
 
 ---
@@ -33,16 +43,16 @@
 * ☁️ Telegram-powered cloud storage
 * 🔐 MTProto + Telegram 2FA
 * 📁 Automatic file categorization
-* 🎬 Photo, video, audio and document previews
-* ⚡ Background upload/download
-* 🔄 Resume interrupted transfers
+* 🎬 Media and document previews
+* ⚡ Background uploads and downloads
+* 🔄 Resumable transfers
 * 🌙 Dynamic light/dark theme
 * 🔔 In-app update checker
 * 🐛 Built-in bug reporting
 
 ---
 
-## How it works
+## How It Works
 
 ```mermaid
 flowchart LR
@@ -130,13 +140,13 @@ flutter build apk --release
 
 ## Release
 
-Update `pubspec.yaml`:
+Update the version in `pubspec.yaml`:
 
 ```yaml
 version: 1.0.1+2
 ```
 
-Then:
+Then build:
 
 ```bash
 flutter build apk --release
