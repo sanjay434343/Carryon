@@ -1,7 +1,7 @@
 # Carryon
 
 <p align="center">
-  <img src="assets/logo.png" width="110" alt="Carryon Logo">
+  <img src="images/logo.png" width="110" alt="Carryon Logo">
 </p>
 
 <p align="center">
