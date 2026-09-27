@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/home.gif" width="260" alt="Carryon Home">
+  <img src="assets/storage.gif" width="260" alt="Carryon Home">
   &nbsp;&nbsp;&nbsp;
   <img src="images/summary.gif" width="260" alt="Carryon Storage Summary">
 </p>
@@ -36,6 +36,7 @@
 
 <p align="center">
   <img src="images/home.png" width="200">
+  <img src="images/detail.png" width="200">
   <img src="iamges/storage.png" width="200">
   <img src="images/search.png" width="200">
   <img src="images/settings.png" width="200">
