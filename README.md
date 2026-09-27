@@ -22,18 +22,23 @@
 <p align="center">
   <img src="assets/home.gif" width="260" alt="Carryon Home">
   &nbsp;&nbsp;&nbsp;
-  <img src="assets/storage-summary.gif" width="260" alt="Carryon Storage Summary">
+  <img src="images/home.gif" width="260" alt="Carryon Storage Summary">
 </p>
 
+<p align="center">
+  <img src="assets/home.gif" width="260" alt="Carryon Home">
+  &nbsp;&nbsp;&nbsp;
+  <img src="images/summary.gif" width="260" alt="Carryon Storage Summary">
+</p>
 ---
 
 ## Screenshots
 
 <p align="center">
-  <img src="assets/home.png" width="200">
-  <img src="assets/files.png" width="200">
-  <img src="assets/player.png" width="200">
-  <img src="assets/settings.png" width="200">
+  <img src="images/home.png" width="200">
+  <img src="iamges/files.png" width="200">
+  <img src="images/player.png" width="200">
+  <img src="images/settings.png" width="200">
 </p>
 
 ---
