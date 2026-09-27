@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carryon — Cloud in Your Pocket</title>
+    <meta name="description" content="Carryon brings ultra-fast, encrypted cloud storage to your pocket. Keep your files with you, everywhere.">
+    <link rel="icon" href="assets/images/logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════════
+           DESIGN SYSTEM
+        ═══════════════════════════════════════════ */
+        :root {
+            --blue-900: #002776;
+            --blue-700: #0842a0;
+            --blue-600: #0b57d0;
+            --blue-500: #1a73e8;
+            --blue-400: #4a9af5;
+            --blue-300: #76b8ff;
+            --blue-200: #aed4ff;
+            --blue-100: #d3e8ff;
+            --blue-50:  #e8f2fe;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --slate-400: #94a3b8;
+            --slate-300: #cbd5e1;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50:  #f8fafc;
+            --white: #ffffff;
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --radius-xl: 36px;
+            --radius-pill: 50px;
+            --shadow-soft: 0 4px 20px rgba(0,0,0,0.06);
+            --shadow-md: 0 12px 35px rgba(0,0,0,0.08);
+            --shadow-lg: 0 25px 50px rgba(0,0,0,0.12);
+            --shadow-glow: 0 0 60px rgba(26,115,232,0.25);
+            --transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--slate-50);
+            color: var(--slate-900);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            width: 100%;
+        }
+
+        /* ═══════════════════════════════════════════
+           ANIMATED FLOATING NAVBAR
+        ═══════════════════════════════════════════ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            padding: 1rem 0;
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            padding: 0.6rem 0;
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+        }
+
+        .nav-brand img {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 4px 12px rgba(26,115,232,0.2);
+        }
+
+        .nav-brand-text {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            letter-spacing: -0.5px;
+            transition: color 0.3s;
+        }
+
+        .navbar.scrolled .nav-brand-text {
+            color: var(--slate-900);
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.85);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-pill);
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled .nav-menu a {
+            color: var(--slate-600);
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.15);
+            color: var(--white);
+        }
+
+        .navbar.scrolled .nav-menu a:hover {
+            background: var(--blue-50);
+            color: var(--blue-600);
+        }
+
+        .nav-cta-btn {
+            background: var(--white) !important;
+            color: var(--blue-600) !important;
+            font-weight: 700 !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar.scrolled .nav-cta-btn {
+            background: var(--blue-500) !important;
+            color: var(--white) !important;
+            box-shadow: 0 4px 15px rgba(26,115,232,0.3);
+        }
+
+        /* ═══════════════════════════════════════════
+           HERO SECTION — GRAND CINEMATIC
+        ═══════════════════════════════════════════ */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: url('assets/images/hero_cloud_bg.png'),
+                        linear-gradient(180deg, #0a5dd6 0%, #2196f3 35%, #64b5f6 60%, #e3f0ff 85%, #ffffff 100%);
+            background-size: cover;
+            background-position: center bottom;
+            z-index: 0;
+        }
+
+        /* CSS Volumetric Clouds */
+        .cloud-layer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .css-cloud {
+            position: absolute;
+            background: radial-gradient(ellipse at 50% 40%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+        }
+
+        /* Bottom cloud floor */
+        .c1 { width: 600px; height: 300px; bottom: -120px; left: -80px; }
+        .c2 { width: 800px; height: 400px; bottom: -180px; left: 15%; }
+        .c3 { width: 700px; height: 350px; bottom: -160px; right: -100px; }
+        .c4 { width: 500px; height: 250px; bottom: -100px; left: 40%; }
+        .c5 { width: 900px; height: 400px; bottom: -200px; left: 55%; }
+
+        /* Mid floating wisps */
+        .c6 { width: 350px; height: 180px; top: 15%; left: 5%; opacity: 0.5; animation: driftRight 50s linear infinite; }
+        .c7 { width: 450px; height: 200px; top: 35%; right: -200px; opacity: 0.4; animation: driftLeft 60s linear infinite; }
+        .c8 { width: 300px; height: 150px; top: 55%; left: 25%; opacity: 0.35; animation: driftRight 45s linear infinite; animation-delay: -20s; }
+
+        @keyframes driftRight {
+            0% { transform: translateX(-400px); }
+            100% { transform: translateX(calc(100vw + 400px)); }
+        }
+
+        @keyframes driftLeft {
+            0% { transform: translateX(400px); }
+            100% { transform: translateX(calc(-100vw - 400px)); }
+        }
+
+        .hero-gradient {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(180deg,
+                rgba(10, 60, 180, 0.3) 0%,
+                rgba(0, 80, 200, 0.1) 40%,
+                rgba(255,255,255,0) 70%,
+                rgba(248,250,252,1) 100%
+            );
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 5;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 4rem;
+            align-items: center;
+            padding: 8rem 0 6rem;
+            width: 100%;
+        }
+
+        /* HERO LEFT */
+        .hero-left {
+            color: var(--white);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 0.55rem 1.4rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .badge-pulse {
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #22c55e;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.3); }
+        }
+
+        .hero-heading {
+            font-size: 5.8rem;
+            font-weight: 900;
+            line-height: 1.02;
+            letter-spacing: -3px;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 8px 40px rgba(0,30,80,0.4);
+            animation: fadeInUp 0.8s ease 0.1s forwards;
+            opacity: 0;
+        }
+
+        .hero-heading .highlight {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-heading .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 0;
+            width: 100%;
+            height: 14px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 10px;
+            z-index: -1;
+        }
+
+        .hero-sub {
+            font-size: 1.55rem;
+            font-weight: 400;
+            line-height: 1.55;
+            max-width: 540px;
+            text-shadow: 0 3px 15px rgba(0,30,80,0.3);
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.3s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-grand {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.1rem 2.5rem;
+            border-radius: var(--radius-pill);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.15rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--white);
+            color: var(--blue-600);
+            box-shadow: 0 20px 50px rgba(0,30,80,0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 28px 60px rgba(0,30,80,0.45);
+        }
+
+        .btn-primary .btn-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 6px 18px rgba(26,115,232,0.4);
+        }
+
+        .btn-ghost {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255,255,255,0.45);
+            color: var(--white);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        /* HERO RIGHT — 3D VISUAL */
+        .hero-right {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.4s forwards;
+        }
+
+        .hero-phone-showcase {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .hero-phone-showcase img {
+            width: 100%;
+            border-radius: var(--radius-xl);
+            filter: drop-shadow(0 40px 80px rgba(0,20,60,0.4));
+            transition: transform 0.6s ease;
+        }
+
+        .hero-phone-showcase:hover img {
+            transform: scale(1.04) rotate(1deg);
+        }
+
+        /* Floating Logo Badge */
+        .floating-logo {
+            position: absolute;
+            top: -30px;
+            left: -40px;
+            width: 100px;
+            height: 100px;
+            background: var(--white);
+            border-radius: 28px;
+            padding: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            animation: floatSlow 5s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        .floating-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 0 !important;
+            filter: none !important;
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-18px) rotate(4deg); }
+        }
+
+        /* ═══════════════════════════════════════════
+           SOCIAL PROOF / TRUST BAR
+        ═══════════════════════════════════════════ */
+        .trust-bar {
+            padding: 3rem 0 4rem;
+            background: var(--slate-50);
+        }
+
+        .trust-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+            opacity: 0.6;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--slate-500);
+            letter-spacing: -0.3px;
+        }
+
+        .trust-icon {
+            font-size: 1.4rem;
+        }
+
+        /* ═══════════════════════════════════════════
+           ABOUT SECTION — SPLIT LAYOUT
+        ═══════════════════════════════════════════ */
+        .about-section {
+            padding: 8rem 0;
+            background: var(--white);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .about-visual {
+            position: relative;
+        }
+
+        .about-visual-card {
+            background: linear-gradient(135deg, var(--blue-50) 0%, var(--blue-100) 100%);
+            border-radius: var(--radius-xl);
+            padding: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-visual-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(26,115,232,0.08) 0%, transparent 70%);
+        }
+
+        .about-visual-card img {
+            width: 220px;
+            height: 220px;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 40px rgba(26,115,232,0.2));
+            animation: floatSlow 6s ease-in-out infinite;
+        }
+
+        .about-text .section-tag {
+            display: inline-block;
+            color: var(--blue-500);
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            background: var(--blue-50);
+            padding: 0.4rem 1.2rem;
+            border-radius: var(--radius-pill);
+        }
+
+        .about-text .section-title {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.12;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+            color: var(--slate-900);
+        }
+
+        .about-text .section-desc {
+            font-size: 1.2rem;
+            color: var(--slate-500);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .about-stats-row {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .about-stat {
+            text-align: center;
+        }
+
+        .about-stat-num {
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: var(--blue-500);
+            line-height: 1;
+        }
+
+        .about-stat-label {
+            font-size: 0.95rem;
+            color: var(--slate-400);
+            font-weight: 600;
+            margin-top: 0.3rem;
+        }
+
+        /* ═══════════════════════════════════════════
+           GRAND FEATURES — BENTO GRID
+        ═══════════════════════════════════════════ */
+        .features-section {
+            padding: 8rem 0;
+            background: var(--slate-100);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 5rem;
+        }
+
+        .section-header .section-tag {
+            display: inline-block;
+            color: var(--blue-500);
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            background: var(--blue-50);
+            padding: 0.4rem 1.2rem;
+            border-radius: var(--radius-pill);
+        }
+
+        .section-header .section-title {
+            font-size: 3.2rem;
+            font-weight: 900;
+            line-height: 1.12;
+            margin-bottom: 1.2rem;
+            letter-spacing: -1px;
+            color: var(--slate-900);
+        }
+
+        .section-header .section-desc {
+            font-size: 1.2rem;
+            color: var(--slate-500);
+            line-height: 1.65;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: auto;
+            gap: 1.5rem;
+        }
+
+        .bento-card {
+            background: var(--white);
+            border: 1px solid var(--slate-200);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--slate-300);
+        }
+
+        .bento-card.span-7 { grid-column: span 7; }
+        .bento-card.span-5 { grid-column: span 5; }
+        .bento-card.span-4 { grid-column: span 4; }
+        .bento-card.span-6 { grid-column: span 6; }
+
+        .bento-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 1.6rem;
+        }
+
+        .bento-icon.blue { background: var(--blue-50); }
+        .bento-icon.purple { background: #f3e8ff; }
+        .bento-icon.green { background: #ecfdf5; }
+        .bento-icon.orange { background: #fff7ed; }
+
+        .bento-card h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            margin-bottom: 0.8rem;
+        }
+
+        .bento-card p {
+            font-size: 1.05rem;
+            color: var(--slate-500);
+            line-height: 1.65;
+        }
+
+        .bento-card .bento-glow {
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .bento-card:hover .bento-glow {
+            opacity: 1;
+        }
+
+        .bento-glow.blue-glow { background: radial-gradient(circle, rgba(26,115,232,0.06) 0%, transparent 70%); }
+        .bento-glow.purple-glow { background: radial-gradient(circle, rgba(147,51,234,0.06) 0%, transparent 70%); }
+        .bento-glow.green-glow { background: radial-gradient(circle, rgba(34,197,94,0.06) 0%, transparent 70%); }
+        .bento-glow.orange-glow { background: radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 70%); }
+
+        /* ═══════════════════════════════════════════
+           HOW IT WORKS — TIMELINE
+        ═══════════════════════════════════════════ */
+        .howto-section {
+            padding: 8rem 0;
+            background: var(--white);
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 45px;
+            left: 16%;
+            right: 16%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--blue-200), var(--blue-400), var(--blue-200));
+            border-radius: 10px;
+            z-index: 0;
+        }
+
+        .timeline-step {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 3px solid var(--blue-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.8rem;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--blue-500);
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition);
+        }
+
+        .timeline-step:hover .step-circle {
+            border-color: var(--blue-500);
+            box-shadow: var(--shadow-glow);
+            transform: scale(1.1);
+        }
+
+        .timeline-step h4 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            margin-bottom: 0.6rem;
+        }
+
+        .timeline-step p {
+            font-size: 1.05rem;
+            color: var(--slate-500);
+            line-height: 1.6;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        /* ═══════════════════════════════════════════
+           STATS BANNER — DARK GRADIENT
+        ═══════════════════════════════════════════ */
+        .stats-section {
+            background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 50%, var(--blue-600) 100%);
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-block h3 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--blue-300);
+            line-height: 1.1;
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-block p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 600;
+        }
+
+        /* ═══════════════════════════════════════════
+           FAQ — ACCORDION
+        ═══════════════════════════════════════════ */
+        .faq-section {
+            padding: 8rem 0;
+            background: var(--slate-50);
+        }
+
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--white);
+            border: 1px solid var(--slate-200);
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .faq-item:hover {
+            border-color: var(--slate-300);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--slate-900);
+            user-select: none;
+        }
+
+        .faq-toggle {
+            width: 36px;
+            height: 36px;
+            background: var(--blue-50);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--blue-500);
+            font-weight: 500;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .faq-item.open .faq-toggle {
+            background: var(--blue-500);
+            color: var(--white);
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 2rem;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+            padding: 0 2rem 1.5rem;
+        }
+
+        .faq-answer p {
+            font-size: 1.1rem;
+            color: var(--slate-500);
+            line-height: 1.65;
+        }
+
+        /* ═══════════════════════════════════════════
+           CTA BANNER — CINEMATIC
+        ═══════════════════════════════════════════ */
+        .cta-section {
+            position: relative;
+            padding: 8rem 0;
+            text-align: center;
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        .cta-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: url('assets/images/hero_cloud_bg.png'),
+                        linear-gradient(180deg, #0a5dd6 0%, #2196f3 50%, #64b5f6 100%);
+            background-size: cover;
+            background-position: center center;
+            z-index: 0;
+        }
+
+        .cta-overlay {
+            position: absolute;
+            top:0; left:0; width:100%; height:100%;
+            background: linear-gradient(135deg, rgba(11,87,208,0.9) 0%, rgba(0,39,118,0.95) 100%);
+            z-index: 1;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-content img {
+            width: 90px;
+            height: 90px;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+        }
+
+        .cta-content h2 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1.2rem;
+            letter-spacing: -1px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .cta-content p {
+            font-size: 1.35rem;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            line-height: 1.5;
+        }
+
+        .btn-cta-grand {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem 3rem;
+            background: var(--white);
+            color: var(--blue-600);
+            border-radius: var(--radius-pill);
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+            transition: var(--transition);
+        }
+
+        .btn-cta-grand:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 28px 60px rgba(0,0,0,0.35);
+        }
+
+        /* ═══════════════════════════════════════════
+           FOOTER — PREMIUM
+        ═══════════════════════════════════════════ */
+        footer {
+            background: var(--slate-900);
+            color: var(--slate-400);
+            padding: 5rem 0 2rem;
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .footer-brand img {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+        }
+
+        .footer-brand span {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--white);
+        }
+
+        .footer-col h4 {
+            color: var(--white);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-col p {
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--slate-400);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--slate-800);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.95rem;
+        }
+
+        /* ═══════════════════════════════════════════
+           DOWNLOAD SECTION
+        ═══════════════════════════════════════════ */
+        .download-section {
+            padding: 8rem 0;
+            background: linear-gradient(180deg, var(--slate-50) 0%, var(--white) 100%);
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .download-card {
+            background: var(--white);
+            border: 2px solid var(--slate-200);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--blue-400);
+            box-shadow: 0 25px 50px rgba(26, 115, 232, 0.12);
+        }
+
+        .download-card.recommended {
+            border-color: var(--blue-500);
+            box-shadow: 0 15px 40px rgba(26, 115, 232, 0.1);
+        }
+
+        .download-card.recommended::before {
+            content: 'RECOMMENDED';
+            position: absolute;
+            top: 16px;
+            right: -30px;
+            background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            padding: 0.3rem 2.5rem;
+            transform: rotate(45deg);
+        }
+
+        .dl-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--blue-50);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .download-card h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .download-card .dl-desc {
+            font-size: 1rem;
+            color: var(--slate-500);
+            line-height: 1.5;
+            margin-bottom: 1.8rem;
+        }
+
+        .dl-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(26, 115, 232, 0.3);
+            transition: var(--transition);
+        }
+
+        .dl-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(26, 115, 232, 0.4);
+        }
+
+        .dl-version-tag {
+            display: inline-block;
+            background: var(--blue-50);
+            color: var(--blue-600);
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--radius-pill);
+            margin-top: 1rem;
+        }
+
+        /* ═══════════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════════ */
+        @media (max-width: 1024px) {
+            .hero-content { grid-template-columns: 1fr; text-align: center; }
+            .hero-actions { justify-content: center; }
+            .hero-right { margin-top: 2rem; }
+            .hero-heading { font-size: 4rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .bento-card.span-7, .bento-card.span-5, .bento-card.span-4, .bento-card.span-6 { grid-column: span 12; }
+            .timeline { grid-template-columns: 1fr; }
+            .timeline::before { display: none; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-top { grid-template-columns: 1fr 1fr; }
+            .nav-menu { display: none; }
+            .download-grid { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; }
+        }
+
+        @media (max-width: 600px) {
+            .hero-heading { font-size: 3rem; letter-spacing: -1px; }
+            .hero-sub { font-size: 1.2rem; }
+            .section-header .section-title, .about-text .section-title { font-size: 2.2rem; }
+            .cta-content h2 { font-size: 2.4rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .footer-top { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══ NAVBAR ═══ -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-inner">
+            <a href="#" class="nav-brand">
+                <img src="assets/images/logo.png" alt="Carryon Logo">
+                <span class="nav-brand-text">Carryon</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#download" class="nav-cta-btn">Download</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="cloud-layer">
+            <div class="css-cloud c1"></div>
+            <div class="css-cloud c2"></div>
+            <div class="css-cloud c3"></div>
+            <div class="css-cloud c4"></div>
+            <div class="css-cloud c5"></div>
+            <div class="css-cloud c6"></div>
+            <div class="css-cloud c7"></div>
+            <div class="css-cloud c8"></div>
+        </div>
+        <div class="hero-gradient"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-left">
+                    <div class="hero-badge">
+                        <span class="badge-pulse"></span>
+                        STABLE RELEASE v1.0.0 IS LIVE
+                    </div>
+                    <h1 class="hero-heading">
+                        Cloud in<br>Your <span class="highlight">Pocket</span>
+                    </h1>
+                    <p class="hero-sub">
+                        Keep your files with you, everywhere. Carryon brings ultra-fast, encrypted cloud storage right into your hands.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="https://carryo-n.vercel.app/api/carryon/universal" class="btn-grand btn-primary">
+                            <span class="btn-icon">↓</span>
+                            Download Now
+                        </a>
+                        <a href="#download" class="btn-grand btn-ghost">
+                            All Versions →
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-right">
+                    <div class="hero-phone-showcase" style="display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                        <div style="
+                            width: 260px; height: 260px;
+                            background: rgba(255,255,255,0.2);
+                            backdrop-filter: blur(30px);
+                            -webkit-backdrop-filter: blur(30px);
+                            border: 2px solid rgba(255,255,255,0.5);
+                            border-radius: 50px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            box-shadow: 0 40px 80px rgba(0,20,60,0.3), 0 0 120px rgba(26,115,232,0.15);
+                            animation: floatSlow 5s ease-in-out infinite;
+                            margin-bottom: 2rem;
+                        ">
+                            <img src="assets/images/logo.png" alt="Carryon Logo" style="width: 180px; height: 180px; object-fit: contain; filter: drop-shadow(0 20px 40px rgba(0,30,90,0.3));">
+                        </div>
+                        <div style="
+                            display: flex;
+                            gap: 1rem;
+                            flex-wrap: wrap;
+                            justify-content: center;
+                        ">
+                            <div style="background:rgba(255,255,255,0.2); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border:1px solid rgba(255,255,255,0.4); border-radius:18px; padding:0.8rem 1.4rem; display:flex; align-items:center; gap:0.6rem; font-size:0.95rem; font-weight:700; color:white; box-shadow:0 10px 25px rgba(0,0,0,0.1); animation: floatSlow 4s ease-in-out infinite; animation-delay:-1s;">🖼️ Photos</div>
+                            <div style="background:rgba(255,255,255,0.2); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border:1px solid rgba(255,255,255,0.4); border-radius:18px; padding:0.8rem 1.4rem; display:flex; align-items:center; gap:0.6rem; font-size:0.95rem; font-weight:700; color:white; box-shadow:0 10px 25px rgba(0,0,0,0.1); animation: floatSlow 4.5s ease-in-out infinite; animation-delay:-2s;">📄 Docs</div>
+                            <div style="background:rgba(255,255,255,0.2); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border:1px solid rgba(255,255,255,0.4); border-radius:18px; padding:0.8rem 1.4rem; display:flex; align-items:center; gap:0.6rem; font-size:0.95rem; font-weight:700; color:white; box-shadow:0 10px 25px rgba(0,0,0,0.1); animation: floatSlow 5.5s ease-in-out infinite; animation-delay:-3s;">🎵 Music</div>
+                            <div style="background:rgba(255,255,255,0.2); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border:1px solid rgba(255,255,255,0.4); border-radius:18px; padding:0.8rem 1.4rem; display:flex; align-items:center; gap:0.6rem; font-size:0.95rem; font-weight:700; color:white; box-shadow:0 10px 25px rgba(0,0,0,0.1); animation: floatSlow 4s ease-in-out infinite; animation-delay:-4s;">📹 Videos</div>
+                            <div style="background:rgba(255,255,255,0.2); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border:1px solid rgba(255,255,255,0.4); border-radius:18px; padding:0.8rem 1.4rem; display:flex; align-items:center; gap:0.6rem; font-size:0.95rem; font-weight:700; color:white; box-shadow:0 10px 25px rgba(0,0,0,0.1); animation: floatSlow 5s ease-in-out infinite; animation-delay:-5s;">🔒 Secure</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ TRUST BAR ═══ -->
+    <div class="trust-bar">
+        <div class="container">
+            <div class="trust-inner">
+                <div class="trust-item"><span class="trust-icon">🔓</span> End-to-End Encrypted</div>
+                <div class="trust-item"><span class="trust-icon">⚡</span> Blazing Fast Sync</div>
+                <div class="trust-item"><span class="trust-icon">🌍</span> 100% Open Source</div>
+                <div class="trust-item"><span class="trust-icon">📱</span> Built with Flutter</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ ABOUT ═══ -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-visual">
+                    <div class="about-visual-card">
+                        <img src="assets/images/logo.png" alt="Carryon Logo">
+                    </div>
+                </div>
+                <div class="about-text">
+                    <span class="section-tag">About Carryon</span>
+                    <h2 class="section-title">The Ultimate Cloud Companion for Modern Mobility</h2>
+                    <p class="section-desc">
+                        Carryon is engineered from the ground up to solve the friction of file transport and cloud access. By combining bank-grade multi-factor security with real-time live synchronization and a gorgeous Telegram-inspired interface, Carryon ensures your critical files are ready whenever and wherever you need them.
+                    </p>
+                    <div class="about-stats-row">
+                        <div class="about-stat">
+                            <div class="about-stat-num">v1.0.0</div>
+                            <div class="about-stat-label">Stable Release</div>
+                        </div>
+                        <div class="about-stat">
+                            <div class="about-stat-num">&lt;0.2s</div>
+                            <div class="about-stat-label">Sync Latency</div>
+                        </div>
+                        <div class="about-stat">
+                            <div class="about-stat-num">AES-256</div>
+                            <div class="about-stat-label">Encryption</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ FEATURES — BENTO GRID ═══ -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Powerful Features</span>
+                <h2 class="section-title">Everything You Need, Nothing You Don't</h2>
+                <p class="section-desc">Built for speed, security, and visual elegance. Every pixel is intentional.</p>
+            </div>
+
+            <div class="bento-grid">
+                <!-- Row 1 -->
+                <div class="bento-card span-7">
+                    <div class="bento-glow blue-glow"></div>
+                    <div class="bento-icon blue">🔐</div>
+                    <h3>Bank-Grade Two-Factor Authentication</h3>
+                    <p>Protect every session with hardware-backed 2FA and tokenized login flows. Your data is shielded with military-grade session management and encrypted secure storage, designed to stop unauthorized access before it starts.</p>
+                </div>
+                <div class="bento-card span-5">
+                    <div class="bento-glow purple-glow"></div>
+                    <div class="bento-icon purple">✨</div>
+                    <h3>Particle Dissolve Effects</h3>
+                    <p>Delightful Telegram-inspired particle dissolution animations and dynamic micro-interactions that make every swipe, tap, and transition feel alive.</p>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="bento-card span-5">
+                    <div class="bento-glow green-glow"></div>
+                    <div class="bento-icon green">⚡</div>
+                    <h3>Real-Time Live Sync</h3>
+                    <p>Powered by ultra-fast Flask backend services, seamlessly query and synchronize Google Sheets datasets and cloud state with sub-200ms latency.</p>
+                </div>
+                <div class="bento-card span-7">
+                    <div class="bento-glow orange-glow"></div>
+                    <div class="bento-icon orange">🌐</div>
+                    <h3>Telegram MTProto Transport Protocol</h3>
+                    <p>Built with native Telegram MTProto authentication support for ultra-fast, robust cloud communication and message delivery. Leveraging the same battle-tested protocol that powers hundreds of millions of Telegram connections worldwide.</p>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="bento-card span-4">
+                    <div class="bento-icon blue">📱</div>
+                    <h3>Cross-Platform</h3>
+                    <p>Engineered with Flutter for seamless performance across Android, desktop, and web.</p>
+                </div>
+                <div class="bento-card span-4">
+                    <div class="bento-icon purple">🧠</div>
+                    <h3>Smart Session Manager</h3>
+                    <p>Intelligent session persistence ensures you never lose your state, even across restarts.</p>
+                </div>
+                <div class="bento-card span-4">
+                    <div class="bento-icon green">📊</div>
+                    <h3>Dashboard Analytics</h3>
+                    <p>Beautiful real-time dashboards that visualize your cloud storage usage and sync activity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ HOW IT WORKS ═══ -->
+    <section class="howto-section" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Simplified Workflow</span>
+                <h2 class="section-title">Get Started in Three Steps</h2>
+                <p class="section-desc">From download to full cloud access in under a minute.</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-step">
+                    <div class="step-circle">01</div>
+                    <h4>Download & Install</h4>
+                    <p>Grab the latest Carryon APK directly from our servers and install on your Android device.</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-circle">02</div>
+                    <h4>Authenticate Securely</h4>
+                    <p>Sign in with 2FA protection and connect your cloud services, Google Sheets, or Telegram accounts.</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-circle">03</div>
+                    <h4>Carry On, Anywhere</h4>
+                    <p>Enjoy instant live sync, beautiful UI, and encrypted file management right in your pocket.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ STATS BANNER ═══ -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-block">
+                    <h3>100%</h3>
+                    <p>Open Source</p>
+                </div>
+                <div class="stat-block">
+                    <h3>&lt;0.2s</h3>
+                    <p>Ultra-Low Latency</p>
+                </div>
+                <div class="stat-block">
+                    <h3>AES-256</h3>
+                    <p>Military Encryption</p>
+                </div>
+                <div class="stat-block">
+                    <h3>v1.0.0</h3>
+                    <p>Stable Release</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ FAQ ═══ -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">FAQ</span>
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-desc">Everything you need to know about Carryon.</p>
+            </div>
+
+            <div class="faq-grid">
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>Is Carryon completely free and open source?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! Carryon is 100% open source under a permissive license. You can inspect, fork, and contribute to the source code anytime on our GitHub repository at github.com/sanjay434343/Carryon.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>How does the Google Sheets integration work?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Carryon connects through a lightweight Flask backend API service that fetches public Google Sheet data in real-time. The data is cached intelligently for instant access both online and offline.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>Which platforms does Carryon support?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Carryon is built with Flutter, currently supporting Android builds out of the box. Desktop (Windows, macOS, Linux) and web builds are on the roadmap for upcoming releases.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>What is MTProto and why does Carryon use it?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>MTProto is Telegram's custom cryptographic protocol designed for speed and security. Carryon leverages MTProto for ultra-fast, encrypted communication with Telegram's infrastructure, ensuring your cloud sessions are both instant and private.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>How secure is Carryon?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Extremely secure. Carryon implements AES-256 encryption for data at rest, two-factor authentication for login flows, and tokenized session management. Your files never leave your device unencrypted.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ DOWNLOAD SECTION ═══ -->
+    <section class="download-section" id="download">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Download Carryon</span>
+                <h2 class="section-title">Choose Your Build</h2>
+                <p class="section-desc">Pick the right APK for your device. Not sure? Go with Universal.</p>
+            </div>
+
+            <div class="download-grid">
+                <div class="download-card recommended">
+                    <div class="dl-icon">📦</div>
+                    <h3>Universal</h3>
+                    <p class="dl-desc">Works on all Android devices. Larger file size but guaranteed compatibility.</p>
+                    <a href="https://carryo-n.vercel.app/api/carryon/universal" class="dl-btn">
+                        ↓ &nbsp; Download Universal
+                    </a>
+                    <span class="dl-version-tag" id="ver-universal">Latest</span>
+                </div>
+
+                <div class="download-card">
+                    <div class="dl-icon">🚀</div>
+                    <h3>ARM64 (Latest Devices)</h3>
+                    <p class="dl-desc">Optimized for modern smartphones and tablets with 64-bit processors.</p>
+                    <a href="https://carryo-n.vercel.app/api/carryon/arm64" class="dl-btn">
+                        ↓ &nbsp; Download ARM64
+                    </a>
+                    <span class="dl-version-tag" id="ver-arm64">Latest</span>
+                </div>
+
+                <div class="download-card">
+                    <div class="dl-icon">📱</div>
+                    <h3>ARMv7 (Older Devices)</h3>
+                    <p class="dl-desc">For legacy 32-bit Android devices. Lightweight and compatible.</p>
+                    <a href="https://carryo-n.vercel.app/api/carryon/armeabi-v7a" class="dl-btn">
+                        ↓ &nbsp; Download ARMv7
+                    </a>
+                    <span class="dl-version-tag" id="ver-armv7">Latest</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ CTA BANNER ═══ -->
+    <section class="cta-section">
+        <div class="cta-bg"></div>
+        <div class="cta-overlay"></div>
+        <div class="container">
+            <div class="cta-content">
+                <img src="images/logo.png" alt="Carryon">
+                <h2>Ready to Carry Your Cloud Everywhere?</h2>
+                <p>Download Carryon today and experience the future of pocket-sized cloud management.</p>
+                <a href="https://carryo-n.vercel.app/api/carryon/universal" class="btn-cta-grand">
+                    ↓ &nbsp; Get Carryon Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-col">
+                    <div class="footer-brand">
+                        <img src="assets/images/logo.png" alt="Carryon">
+                        <span>Carryon</span>
+                    </div>
+                    <p>Cloud in your pocket. Designed for speed, security, and absolute visual elegance. Built with Flutter and Dart.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Navigate</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Repository</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/sanjay434343/Carryon" target="_blank">Source Code</a></li>
+                        <li><a href="#download">Download APK</a></li>
+                        <li><a href="https://github.com/sanjay434343/Carryon/issues" target="_blank">Report Issue</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Version Details</h4>
+                    <p>
+                        App: Carryon<br>
+                        Version: 1.0.0+1<br>
+                        Owner: sanjay434343<br>
+                        Framework: Flutter / Dart
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Carryon App. All rights reserved.</p>
+                <p>Built with ❤️ by sanjay434343</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ═══ SCRIPTS ═══ -->
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // FAQ accordion
+        function toggleFaq(item) {
+            const wasOpen = item.classList.contains('open');
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('open'));
+            // Toggle clicked
+            if (!wasOpen) item.classList.add('open');
+        }
+
+        // Scroll reveal animation
+        const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -60px 0px' };
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.bento-card, .timeline-step, .faq-item, .about-grid, .stat-block, .download-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            revealObserver.observe(el);
+        });
+
+        // Fetch latest release version from GitHub
+        async function fetchLatestVersion() {
+            try {
+                const res = await fetch('https://api.github.com/repos/sanjay434343/Carryon/releases/latest');
+                if (!res.ok) return;
+                const data = await res.json();
+                const tag = data.tag_name || 'v1.0.0';
+
+                // Update version tags in download cards
+                document.getElementById('ver-universal').textContent = tag;
+                document.getElementById('ver-arm64').textContent = tag;
+                document.getElementById('ver-armv7').textContent = tag;
+
+                // Update hero badge
+                const badge = document.querySelector('.hero-badge');
+                if (badge) {
+                    badge.innerHTML = '<span class="badge-pulse"></span> STABLE RELEASE ' + tag.toUpperCase() + ' IS LIVE';
+                }
+            } catch (e) {
+                // Fallback: keep default "Latest" text
+                console.log('Version fetch skipped:', e.message);
+            }
+        }
+
+        fetchLatestVersion();
+    </script>
+</body>
+</html>
